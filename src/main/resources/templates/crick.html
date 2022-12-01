@@ -295,7 +295,7 @@
             if (row.type === true) {
                 iconClass = "badge badge-warning"
             } else {
-                if (row.lock === "YES") {
+                if (row.lock) {
                     iconClass = "badge badge-danger"
                 } else {
                     iconClass = "badge badge-primary"
@@ -367,7 +367,7 @@
             if (data.type === true) {
                 iconClass = "badge badge-warning"
             } else {
-                if (data.lockStatus === true) {
+                if (data.lockStatus) {
                     iconClass = "badge badge-danger"
                 } else {
                     iconClass = "badge badge-primary"
