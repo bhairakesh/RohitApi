@@ -14,6 +14,10 @@ interface SessionBhavDao : JpaRepository<SessionBhavEntity, Int> {
 
     fun findByCode(code: Int): MutableList<SessionBhavEntity>
 
+    fun findByCodeOrderByPositionAsc(code: Int): MutableList<SessionBhavEntity>
+
+    fun findByCodeAndName(code: Int, name: String): SessionBhavEntity?
+
     @Modifying
     @Transactional
     @Query("update SessionBhavEntity s set s.nRate=0.0,s.yRate=0.0,s.nRun=0,s.yRun=0,s.empLockStatus=:lock,s.lockStatus=:lock where s.code=:code")
