@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"-->
+    <!--            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+          integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+          crossorigin="anonymous"/>
+    <title>Hello, world!</title>
+</head>
+<body class="container-fluid">
+
+<div style="margin-top: 10px">
+
+    <div class="row">
+
+        <div class="col-lg-6">
+
+
+            <div class="card text-center">
+                <div class="card-header bg-gradient-primary ">
+                    <h6>ScoreCard Service </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="btn btn-primary" onclick="ScoreService('start')">Start</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <a class="btn btn-danger" th:href="${'/game/setBookMaker/'+code+'/'+gameId}">Stop</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+
+            <div class="card text-center">
+                <div class="card-header bg-gradient-primary ">
+                    <h6>All Live Sessions </h6>
+                </div>
+                <div class="card-body">
+                    <table id="mytable" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Not</th>
+                            <th scope="col">Yes</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card text-center">
+                <div class="card-header bg-gradient-primary ">
+                    <h6>All Active Match/Sessions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h6>BetFair Market</h6>
+
+                        </div>
+                        <div class="card-body">
+
+                            <table id="rateTableBetFair" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Team</th>
+                                    <th scope="col" colspan="2">L</th>
+
+                                    <th scope="col" colspan="2">K</th>
+                                    <th scope="col">
+                                        <button class="btn btn-sm  btn-outline-success " onclick="changeAll('NO')">
+                                            Active
+                                        </button>
+                                    </th>
+                                    <th scope="col">
+                                        <button class="btn btn-sm btn-outline-danger " onclick="changeAll('YES')">
+                                            InActive
+                                        </button>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h6>Diamond Market</h6>
+
+                        </div>
+                        <div class="card-body">
+
+                            <table id="rateTableDiamond" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Team</th>
+                                    <th scope="col">L</th>
+                                    <th scope="col">K</th>
+                                    <th scope="col">
+                                        <button class="btn btn-sm  btn-outline-success " onclick="changeAll(false)">
+                                            Active
+                                        </button>
+                                    </th>
+                                    <th scope="col">
+                                        <button class="btn btn-sm btn-outline-danger " onclick="changeAll(true)">
+                                            InActive
+                                        </button>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <div class="card text-center">
+                        <div class="card-header" align="center">
+                            <h6>Active Sessions</h6>
+                        </div>
+                        <div class="card-body">
+
+                            <table id="mytable123" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><b data-toggle="popover" title="Color Function" data-trigger="hover"
+                                                       data-html="true"
+                                                       data-content="1. <span class='badge badge-warning' style='padding: 6px'> </span> Yellow Color to Manually Control <br/>
+2. <span class='badge badge-primary' style='padding: 6px'> </span> Blue Color define Active <br/>
+3. <span class='badge badge-danger' style='padding: 6px'> </span> Red Color define InActive <br/>">#</b></th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Not</th>
+                                    <th scope="col">Yes</th>
+                                    <th scope="col">
+                                        <button class="btn btn-sm  btn-success " onclick="AllActive()">All Active
+                                        </button>
+                                    </th>
+                                    <th scope="col">
+                                        <button class="btn btn-sm btn-danger " onclick="AllInActive()">All InActive
+                                        </button>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous"></script>
+
+
+<script th:inline="javascript">
+
+    const path = "http://localhost:8082/auto/v1";
+
+    const code = [[${code}]]
+    const powerUrl = [[${powerUrl}]];
+    const gameId = [[${gameId}]]
+    const scoreId = gameId
+
+
+    function ScoreService(type) {
+        let url = path + "/score/" + type + "/" + scoreId + "/" + code
+        $.get(url, function (data, status) {
+            toastr.success(status + ' :-  ' + data)
+        })
+    }
+
+    $(document).keydown(function (data) {
+
+        console.log("data")
+
+        let keyCode = data.key
+
+        if (keyCode === "F1") {
+            EmergencySystem(1)
+            return false
+        }
+        if (keyCode === "F2") {
+
+            EmergencySystem(2)
+            return false
+        }
+        if (keyCode === "F3") {
+            EmergencySystem(3)
+            return false
+        }
+
+    });
+
+    function EmergencySystem(lock) {
+
+        let uurl = "http://localhost:8082/auto/v1" + "/system/" + code + "/" + lock;
+
+
+        $.get(uurl, function (data, status) {
+            toastr.success(status + ' :-  ' + data)
+        })
+
+    }
+
+
+    const exchType = 1;
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+
+    });
+
+
+    $.get(path + '/session/get/' + code + '/' + gameId, function (data, res) {
+        showList(data.list)
+        showActiveList(data.active)
+    });
+
+    setInterval(function () {
+
+        $.get(path + '/session/get/' + code + '/' + gameId, function (data, res) {
+            showList(data.list)
+        });
+    }, 5000);
+
+    setInterval(function () {
+        $.get(path + '/session/get/' + code + '/' + gameId, function (data, res) {
+            // showList(data.list)
+            showActiveList(data.active)
+        });
+    }, 800);
+
+
+    setInterval(function () {
+
+        $.get(path + '/match/get/' + code + "/" + gameId, function (data, res) {
+            // console.log(data.di)
+            // console.log(data.bet)
+            showMatchList(data.di)
+            // showMatchListBetFair(data.bet)
+        });
+    }, 800);
+
+
+    function showMatchList(data) {
+        $('#rateTableDiamond tbody').empty();
+
+        $.each(data, function (index, row) {
+            let iconClass = "badge";
+            if (row.type === true) {
+                iconClass = "badge badge-warning"
+            } else {
+                if (row.lock === "YES") {
+                    iconClass = "badge badge-danger"
+                } else {
+                    iconClass = "badge badge-primary"
+                }
+            }
+
+            const $tr = $('<tr>').append(
+                $('<td><b>' + (index + 1) + '</b> <span class="' + iconClass + '" style="padding: 6px" onclick="changeMatchType(' + row.type + ',' + row.id + ')">  </span></td>'),
+                $('<td>' + row.team + '</td>'),
+                $('<td > <h6 class="badge badge-primary" style="padding: 2px">' + row.b1.toFixed(2) + '</h6></td>'),
+                $('<td > <h6 class="badge badge-danger" style="padding: 2px">' + row.l1.toFixed(2) + '</h6></td>'),
+                $('<td> <button class="btn btn-sm btn-success" >Active</button></td>'),
+                $('<td> <button class="btn btn-sm btn-danger">InActive</button></td>')
+            ).appendTo('#rateTableDiamond tbody');
+        })
+    }
+
+
+    function changeAll(lock) {
+        const json = {
+            code: code,
+            lockStatus: lock
+        }
+        sendRequestWithRes(path + '/match/changeAllCrick', json)
+
+    }
+
+
+    function changeMatchType(type, id) {
+
+        const josn = {
+            code: code,
+            id: id,
+            type: !type
+
+        }
+        sendRequest(path + '/match/changeType', josn)
+    }
+
+
+    function showList(data) {
+
+        $('#mytable tbody').empty();
+        $.each(data, function (index, data) {
+
+            var sessionName = data.nat.replace("'", "")
+
+            var $tr = $('<tr>').append(
+                $('<td>' + (index + 1) + '</b></td>'),
+                $('<td>' + sessionName + '</td>'),
+                $('<td> <h6>' + data.l1 + '</h6><b class="badge badge-danger" style="padding: 2px">' + data.ls1 + '</td>'),
+                $('<td><h6>' + data.b1 + '</h6><b class="badge badge-primary" style="padding: 2px">' + data.bs1 + '</td>'),
+                $('<td> <button class="btn btn-sm btn-secondary" ' +
+                    'onclick="onCreate(\'' + sessionName + '\',\'' + data.sid + '\',' + 10 + ')">Create</button></td>')
+            ).appendTo('#mytable tbody');
+
+        });
+
+    }
+
+    function showActiveList(dataa) {
+
+        $('#mytable123 tbody').empty();
+        $.each(dataa, function (index, data) {
+
+            var iconClass = "badge"
+
+
+            if (data.type === true) {
+                iconClass = "badge badge-warning"
+            } else {
+                if (data.lockStatus === true) {
+                    iconClass = "badge badge-danger"
+                } else {
+                    iconClass = "badge badge-primary"
+                }
+            }
+
+
+            const $tr = $('<tr>').append(
+                $('<td><b>' + (index + 1) + '</b> <span class="' + iconClass + '" style="padding: 6px" onclick="changetype(' + data.type + ',' + data.id + ')" >  </span></td>'),
+                $('<td>' + data.nat + '</td>'),
+                $('<td> <h6>' + data.l1 + '</h6><b class="badge badge-danger" style="padding: 2px">' + data.ls1 + '</td>'),
+                $('<td><h6>' + data.b1 + '</h6><b class="badge badge-primary" style="padding: 2px">' + data.bs1 + '</td>'),
+                $('<td> <button class="btn btn-sm btn-success" ' +
+                    'onclick="activeSession(' + data.id + ',' + 10 + ')">Active</button></td>'),
+                $('<td> <button class="btn btn-sm btn-danger" ' +
+                    'onclick="InactiveSession(' + data.id + ',' + 10 + ')">InActive</button></td>')
+            ).appendTo('#mytable123 tbody');
+
+        });
+
+    }
+
+    function changetype(type, sid) {
+        const data = {
+            code: code,
+            id: sid,
+            type: !type
+
+        }
+        sendRequest(path + "/session/changeType", data)
+    }
+
+    function AllActive() {
+
+        const data = {
+            lockStatus: false,
+            code: code
+        }
+        sendRequest(path + "/session/changeAll", data)
+
+    }
+
+    function AllInActive() {
+        const data = {
+            lockStatus: true,
+            code: code
+        }
+        sendRequest(path + "/session/changeAll", data)
+
+    }
+
+
+    function activeSession(sid, mid) {
+        const data = {
+            id: sid,
+            code: code,
+            lockStatus: false,
+        }
+        sendRequest(path + "/session/changeStatus", data)
+
+    }
+
+    function InactiveSession(sid, mid) {
+
+        const data = {
+            id: sid,
+            code: code,
+            lockStatus: true,
+        }
+        sendRequest(path + "/session/changeStatus", data)
+
+    }
+
+
+    function onCreate(name, id, mid) {
+        $('#exampleModal').modal('show')
+        $('#sname').val(name)
+        this.mid = mid
+        this.sid = id
+    }
+
+
+    function sendData() {
+
+        $('#createBtn').prop('disabled', true)
+
+        $('#exampleModal').modal('hide')
+        let name = $('#sname').val()
+        let pos = $('#spos').val()
+        let user_id = $('#assign').val()
+        let slimit = $('#slimit').val()
+
+        const data = {
+            sid: this.sid,
+            name: name,
+            userId: user_id,
+            position: pos,
+            lockStatus: false,
+            code: code,
+            slimit: slimit
+        }
+
+        $.post(path + "/session/create", data, function (data, status) {
+
+        }).done(function () {
+            toastr.success("Success")
+            $('#createBtn').prop('disabled', false)
+        }).fail(function () {
+            toastr.error("Error")
+            $('#createBtn').prop('disabled', false)
+        })
+
+    }
+
+    function sendRequest(url, data) {
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            processData: false,
+            success: function (data, textStatus, jQxhr) {
+                console.log(data)
+                toastr.warning(textStatus)
+
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+                toastr.error(textStatus)
+            }
+        });
+    }
+
+    function sendRequestWithRes(url, data) {
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            processData: false,
+            success: function (data, textStatus, jQxhr) {
+                toastr.warning(data.msg)
+
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+                toastr.error(textStatus)
+            }
+        });
+    }
+
+
+</script>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Session</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="sname" class="col-form-label">Session Name</label>
+                        <input type="text" class="form-control" id="sname">
+                    </div>
+                    <div class="form-group">
+                        <label for="spos" class="col-form-label">Position:</label>
+                        <input type="number" class="form-control" id="spos">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="slimit" class="col-form-label">Session Max Limit</label>
+                        <input type="number" value="100000" class="form-control" id="slimit">
+                    </div>
+                    <div class="form-group">
+                        <label for="assign" class="col-form-label">Assign User</label>
+                        <select name="assign" id="assign" class="form-control">
+                            <option th:each="user: ${users}" th:value="${user.id}"
+                                    th:text="${user.userName +' '+ user.name }"></option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="createBtn" onclick="sendData()" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
