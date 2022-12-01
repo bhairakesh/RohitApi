@@ -39,12 +39,12 @@ class SessionBackService(val code: Int, private val sessionService: SessionAutoS
                 if (responseBody.isSuccessful) {
                     val data = responseBody.body()
                     val newSess: MutableList<SessionAutoModifyEntity> = ArrayList()
-                    sessions.forEachIndexed { index, e ->
 
+                    sessions.forEachIndexed { index, e ->
                         data?.t3?.forEach lit@{ row ->
                             if (e.sid == row.sid) {
                                 val newData = SessionAutoModifyEntity()
-                                newData.id = e.id
+                                newData.id = e.id!!
                                 if (!e.lockStatus && row.gstatus == "") {
                                     newData.nRun = row.l1.toInt()
                                     newData.nRate = (row.ls1 / 100)
@@ -67,6 +67,8 @@ class SessionBackService(val code: Int, private val sessionService: SessionAutoS
                         }
 
                     }
+
+
                     if (TempData.sessionCheck.getOrDefault(code, false)) {
                         val unSelectList: MutableList<Int> = ArrayList()
                         val selectList: MutableList<Int> = ArrayList()
@@ -79,11 +81,11 @@ class SessionBackService(val code: Int, private val sessionService: SessionAutoS
                                 }
                             }
                             if (check) {
-                                unSelectList.add(e.id)
+                                unSelectList.add(e.id!!)
                             }
 
                             if (!check && e.empLockStatus) {
-                                selectList.add(e.id)
+                                selectList.add(e.id!!)
                             }
                         }
 

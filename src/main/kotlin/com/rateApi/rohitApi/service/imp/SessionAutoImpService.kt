@@ -1,6 +1,5 @@
 package com.rateApi.rohitApi.service.imp
 
-import com.rateApi.rohitApi.TempData
 import com.rateApi.rohitApi.URLData
 import com.rateApi.rohitApi.dao.SessionAutoDao
 import com.rateApi.rohitApi.dao.SessionAutoModifyDao
@@ -9,7 +8,6 @@ import com.rateApi.rohitApi.entity.SessionBhavAutoEntity
 import com.rateApi.rohitApi.jsonData.T3
 import com.rateApi.rohitApi.service.ApiService
 import com.rateApi.rohitApi.service.SessionAutoService
-
 import okhttp3.OkHttpClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -44,7 +42,7 @@ class SessionAutoImpService : SessionAutoService {
     }
 
     override fun getForUpdate(code: Int, emp: Boolean, type: Boolean): MutableList<SessionBhavAutoEntity> {
-        return sessionBhavAutoDao.findByCodeAndEmpLockStatusAndType(code, emp, type)
+        return sessionBhavAutoDao.findByCodeAndType(code, type)
     }
 
     override fun changeType(status: Boolean, id: Int): Int? {
@@ -94,7 +92,7 @@ class SessionAutoImpService : SessionAutoService {
                         if (e.sid == row.sid) {
                             removeList.add(row)
                             row.lockStatus = e.lockStatus
-                            row.id = e.id
+                            row.id = e.id!!
                             row.type = e.type
                             activeList.add(row)
                             return@forEachIndexed

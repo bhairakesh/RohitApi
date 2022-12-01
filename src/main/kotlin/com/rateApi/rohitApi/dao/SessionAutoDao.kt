@@ -13,7 +13,7 @@ interface SessionAutoDao : JpaRepository<SessionBhavAutoEntity, Int> {
 
     fun findByCodeAndEmpLockStatusAndType(code: Int, emp: Boolean, type: Boolean): MutableList<SessionBhavAutoEntity>
 
-
+    fun findByCodeAndType(code: Int, type: Boolean): MutableList<SessionBhavAutoEntity>
     fun findByCodeOrderByPosition(code: Int): MutableList<SessionBhavAutoEntity>
 
     @Transactional
